@@ -54,27 +54,27 @@ services:
     networks:
       - iot
     ports:
-      - '3000:3000'
+      - '3003:3000'
     
-  influxdb8085:
-    image: influxdb:2.7
-    container_name: influxdb8085
-    hostname: influxdb8085
-    ports:
-      - "8085:8086"
-    volumes:
-      - ./influxdb8085/data:/var/lib/influxdb2
-      - ./influxdb8085/config:/etc/influxdb2
-      - ./influxdb8085/opt:/opt
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
-      - DOCKER_INFLUXDB_INIT_ORG=my-org
-      - DOCKER_INFLUXDB_INIT_BUCKET=iot_data
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
-    networks:
-      - iot
+  # influxdb8085:
+  #   image: influxdb:2.7
+  #   container_name: influxdb8085
+  #   hostname: influxdb8085
+  #   ports:
+  #     - "8085:8086"
+  #   volumes:
+  #     - ./influxdb8085/data:/var/lib/influxdb2
+  #     - ./influxdb8085/config:/etc/influxdb2
+  #     - ./influxdb8085/opt:/opt
+  #   environment:
+  #     - DOCKER_INFLUXDB_INIT_MODE=setup
+  #     - DOCKER_INFLUXDB_INIT_USERNAME=admin
+  #     - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
+  #     - DOCKER_INFLUXDB_INIT_ORG=my-org
+  #     - DOCKER_INFLUXDB_INIT_BUCKET=iot_data
+  #     - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
+  #   networks:
+  #     - iot
 
   influxdb8086:
       image: influxdb:2.7
@@ -96,25 +96,25 @@ services:
       networks:
         - iot
 
-  influxdb8087:
-      image: influxdb:2.7
-      container_name: influxdb8087
-      hostname: influxdb8087
-      ports:
-        - "8087:8086"
-      volumes:
-        - ./influxdb8087/data:/var/lib/influxdb2
-        - ./influxdb8087/config:/etc/influxdb2
-        - ./influxdb8087/opt:/opt
-      environment:
-        - DOCKER_INFLUXDB_INIT_MODE=setup
-        - DOCKER_INFLUXDB_INIT_USERNAME=admin
-        - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
-        - DOCKER_INFLUXDB_INIT_ORG=my-org
-        - DOCKER_INFLUXDB_INIT_BUCKET=iot_data
-        - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
-      networks:
-        - iot
+  # influxdb8087:
+  #     image: influxdb:2.7
+  #     container_name: influxdb8087
+  #     hostname: influxdb8087
+  #     ports:
+  #       - "8087:8086"
+  #     volumes:
+  #       - ./influxdb8087/data:/var/lib/influxdb2
+  #       - ./influxdb8087/config:/etc/influxdb2
+  #       - ./influxdb8087/opt:/opt
+  #     environment:
+  #       - DOCKER_INFLUXDB_INIT_MODE=setup
+  #       - DOCKER_INFLUXDB_INIT_USERNAME=admin
+  #       - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
+  #       - DOCKER_INFLUXDB_INIT_ORG=my-org
+  #       - DOCKER_INFLUXDB_INIT_BUCKET=iot_data
+  #       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
+  #     networks:
+  #       - iot
 
   kafka:
     image: bitnami/kafka:latest
@@ -157,6 +157,36 @@ services:
     networks:
       - iot
     restart: always
+
+  mqtt-publisher-json:
+    profiles: ["publisher"]
+    build:
+      context: ./mqtt-publisher-json/app
+    env_file:
+      - .env
+    volumes:
+      - ./mqtt-publisher-json/app/train_reg.json:/app/train_reg.json
+    networks:
+      - iot
+  
+
+  mqtt-bridge-kafka:
+    profiles: ["subscriber"]
+    build:
+      context: ./mqtt-bridge-kafka/app
+    env_file:
+      - .env
+    networks:
+      - iot
+  
+  data-to-influxdb:
+    profiles: ["influxdb"]
+    build:
+      context: ./data-to-influxdb/app
+    env_file:
+      - .env
+    networks:
+      - iot
 
 networks:
   iot:
