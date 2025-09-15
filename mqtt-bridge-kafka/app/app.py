@@ -25,7 +25,7 @@ logging.basicConfig(
 )
 
 MQTT_TOPIC = os.getenv("MQTT_TOPIC", "iot-frames-model")
-MQTT_BROKER = os.getenv("MQTT_HOST", "localhost")
+MQTT_BROKER = os.getenv("MQTT_BROKER", "localhost")
 MQTT_PORT = os.getenv("MQTT_PORT", "1883")
 MQTT_QOS = os.getenv("MQTT_QOS", "1")
 KAFKA_OUTPUT_TOPIC = os.getenv("KAFKA_OUTPUT_TOPIC", "event-frames-model")
