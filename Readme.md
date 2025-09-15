@@ -24,7 +24,7 @@ It is designed to collect, process, and visualize data from IoT devices in real 
 | Kafka-UI    | `8080`    | Kafka management UI |
 | InfluxDB    | `8086`    | Time-series DB |
 | Prometheus  | `9090`    | Metrics server |
-| Grafana     | `3000`    | Visualization dashboards |
+| Grafana     | `3003`    | Visualization dashboards |
 
 ---
 
@@ -34,3 +34,5 @@ It is designed to collect, process, and visualize data from IoT devices in real 
 ```bash
 git clone https://github.com/hanattaw/iot-class-2025-mini-project
 cd iot-class-2025-mini-project
+
+### 2.  
