@@ -86,7 +86,7 @@ def read_csv_file(file_path: str):
             row_data = row.to_dict()
 
             # กำหนด timestamp_ms จาก base_time + i*5 วินาที
-            ts = base_time + timedelta(seconds=i * 5)
+            ts = base_time + timedelta(seconds=i * 1904.6)
             row_data["timestamp"] = ts.strftime("%Y-%m-%dT%H:%M:%SZ")
             row_data["timestamp_ms"] = int(ts.timestamp() * 1000)
 
