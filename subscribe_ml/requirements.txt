@@ -1,0 +1,5 @@
+quixstreams
+python-dotenv
+pandas
+influxdb_client
+joblib
